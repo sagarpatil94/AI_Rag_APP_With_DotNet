@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "dgSpecHash": "UHeZYpC1500=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ADMIN\\Documents\\SQL Server Management Studio\\Sagar\\AI_DotNet_Project\\AI_Rag_APP_With_DotNet\\LocalRag.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ADMIN\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.15\\microsoft.aspnetcore.openapi.10.0.15.nupkg.sha512",
+    "C:\\Users\\ADMIN\\.nuget\\packages\\microsoft.openapi\\2.13.0\\microsoft.openapi.2.13.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://nuget.telerik.com/v3/index.json.",
+      "projectPath": "C:\\Users\\ADMIN\\Documents\\SQL Server Management Studio\\Sagar\\AI_DotNet_Project\\AI_Rag_APP_With_DotNet\\LocalRag.Api.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\ADMIN\\Documents\\SQL Server Management Studio\\Sagar\\AI_DotNet_Project\\AI_Rag_APP_With_DotNet\\LocalRag.Api.csproj",
+      "targetGraphs": []
+    }
+  ]
+}

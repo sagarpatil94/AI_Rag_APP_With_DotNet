@@ -1,0 +1,44 @@
+@LocalRag.Api_HostAddress = http://localhost:5249
+
+### OpenAPI document
+GET {{LocalRag.Api_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###
+
+### Health check
+GET {{LocalRag.Api_HostAddress}}/api/health
+Accept: application/json
+
+###
+
+### Add a document (run before asking a question)
+POST {{LocalRag.Api_HostAddress}}/api/documents
+Content-Type: application/json
+
+{
+  "source": "office-guide.txt",
+  "content": "The Oslo office opens at 9:00 AM and closes at 5:00 PM, Monday through Friday. Visitors should check in at reception."
+}
+
+###
+
+### Ask a question about the added document
+POST {{LocalRag.Api_HostAddress}}/api/chat
+Content-Type: application/json
+
+{
+  "question": "What time does the Oslo office open?",
+  "topK": 3
+}
+
+###
+
+### Invalid topK (expect 400 Bad Request)
+POST {{LocalRag.Api_HostAddress}}/api/chat
+Content-Type: application/json
+
+{
+  "question": "What time does the Oslo office open?",
+  "topK": 11
+}

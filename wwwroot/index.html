@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>Local RAG Studio</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Local RAG Studio home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M7 8.5A3.5 3.5 0 0 1 10.5 5h11A3.5 3.5 0 0 1 25 8.5v15a3.5 3.5 0 0 1-3.5 3.5h-11A3.5 3.5 0 0 1 7 23.5v-15Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 12h8M12 16h8M12 20h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-name">local<span>rag</span></span>
+      </a>
+      <div class="topbar-right">
+        <a class="docs-link" href="/openapi/v1.json" target="_blank" rel="noreferrer">API docs <span aria-hidden="true">↗</span></a>
+        <div class="connection" aria-live="polite">
+          <span id="healthDot" class="status-dot checking"></span>
+          <span id="healthText">Checking API</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div class="eyebrow"><span class="eyebrow-line"></span> PRIVATE BY DESIGN · RUNS LOCALLY</div>
+        <h1>Your knowledge,<br><span>ready to talk.</span></h1>
+        <p class="intro-copy">Add your own documents and get grounded answers from your local AI. Your content stays on this machine.</p>
+        <div class="model-note">
+          <span class="model-icon" aria-hidden="true">✳</span>
+          <span>Powered by your local <strong>Ollama</strong> models</span>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Document and chat workspace">
+        <aside class="ingest-card">
+          <div class="card-heading">
+            <div class="step-icon">01</div>
+            <div>
+              <p class="section-kicker">YOUR KNOWLEDGE BASE</p>
+              <h2>Add a document</h2>
+            </div>
+          </div>
+          <p class="card-description">Paste text or choose a text file. It will be split into searchable pieces and indexed locally.</p>
+
+          <form id="documentForm">
+            <label for="sourceInput">Document name</label>
+            <input id="sourceInput" name="source" type="text" maxlength="200" placeholder="e.g. team-handbook.txt" required>
+
+            <label for="fileInput" class="file-picker">
+              <span class="file-picker-icon" aria-hidden="true">↑</span>
+              <span><strong>Choose a text file</strong><small>.txt, .md, .csv or .log</small></span>
+              <input id="fileInput" type="file" accept=".txt,.md,.csv,.log,text/plain,text/markdown,text/csv">
+            </label>
+
+            <label for="contentInput">Document text</label>
+            <textarea id="contentInput" name="content" rows="8" placeholder="Paste or type the text you want to ask questions about..." required></textarea>
+            <div class="field-footer">
+              <span id="characterCount">0 characters</span>
+              <span>Text is sent to your local API</span>
+            </div>
+
+            <button id="addDocumentButton" class="button button-primary full-width" type="submit">
+              <span class="button-label">Add to knowledge base</span>
+              <span class="button-arrow" aria-hidden="true">→</span>
+            </button>
+          </form>
+
+          <p id="ingestStatus" class="inline-status" role="status">Documents and embeddings are kept in memory and reset when the API restarts.</p>
+        </aside>
+
+        <section class="chat-card" aria-labelledby="chatTitle">
+          <div class="chat-header">
+            <div class="card-heading">
+              <div class="step-icon step-icon-chat">02</div>
+              <div>
+                <p class="section-kicker">GROUNDED CONVERSATION</p>
+                <h2 id="chatTitle">Ask your documents</h2>
+              </div>
+            </div>
+            <span class="local-badge"><span class="status-dot"></span> LOCAL</span>
+          </div>
+
+          <div id="chatMessages" class="chat-messages" aria-live="polite" aria-label="Conversation">
+            <div class="welcome-message">
+              <div class="assistant-avatar" aria-hidden="true">✳</div>
+              <div class="message-content">
+                <span class="message-author">RAG ASSISTANT</span>
+                <p>Hi there! Add a document, then ask me anything about it. I’ll look for relevant passages and cite my sources.</p>
+                <div class="suggestion-row" aria-label="Example questions">
+                  <button class="suggestion" type="button" data-question="What is this document about?">What is this about?</button>
+                  <button class="suggestion" type="button" data-question="Summarize the key points.">Summarize key points</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <form id="chatForm" class="chat-form">
+            <label class="sr-only" for="questionInput">Ask a question about your documents</label>
+            <textarea id="questionInput" rows="1" placeholder="Ask a question about your documents..." required></textarea>
+            <div class="chat-form-footer">
+              <label class="top-k-label" for="topKInput">Sources</label>
+              <select id="topKInput" aria-label="Number of document chunks to retrieve">
+                <option value="1">1 source</option>
+                <option value="3" selected>3 sources</option>
+                <option value="5">5 sources</option>
+                <option value="10">10 sources</option>
+              </select>
+              <span class="chat-hint">Answers are based on your indexed text</span>
+              <button id="askButton" class="button button-send" type="submit" aria-label="Send question">
+                <span class="send-label">Ask</span>
+                <span aria-hidden="true">↑</span>
+              </button>
+            </div>
+          </form>
+        </section>
+      </section>
+
+      <footer class="page-footer">
+        <span><span class="footer-lock" aria-hidden="true">⌑</span> Your documents never leave your local environment.</span>
+        <span>Built for curious minds <span class="footer-sparkle" aria-hidden="true">✳</span></span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
